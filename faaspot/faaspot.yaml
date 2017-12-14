@@ -1,0 +1,7 @@
+
+functions:
+    test:
+        runtime: python2.7
+        handler: handler.main
+        memory: 128
+        timeout: 30
