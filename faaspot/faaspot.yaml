@@ -1,7 +1,27 @@
 
+logo: 'https://www.themoviedb.org/assets/static_cache/2dceae11589334eecd61443249261daf/images/v4/logos/208x226-stacked-green.png'
+
 functions:
-    test:
+    getinfo:
         runtime: python2.7
-        handler: handler.main
+        handler: handler.getinfo
+        description: "get info about given movie"
+        qparams:
+            movie:
+                type: string
+                description: "the movie name"
+                required: true
+        memory: 128
+        timeout: 30
+
+    getrating:
+        runtime: python2.7
+        handler: handler.getrating
+        description: "get rating about given movie"
+        qparams:
+            movie:
+                type: string
+                description: "the movie name"
+                required: true
         memory: 128
         timeout: 30
