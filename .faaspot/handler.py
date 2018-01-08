@@ -14,7 +14,7 @@ from slackclient import SlackClient
 
 def getinfo(event, context):
     query_params = event.get("query", {})
-    info = _get_movie_info(os.environ.get('tmdb_api_key'),
+    info = _get_movie_info(os.environ.get('tmd  b_api_key'),
                            query_params.get('movie'))
     return _build_response(info)
 
@@ -194,5 +194,3 @@ def _get_movie_info(api_key, movie_name=None, filter_fields=None, now_playing=Fa
 
     return results
 
-
-# print main({'query': {'movie': 'ferdinand'}}, {}).get('body')
