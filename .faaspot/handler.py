@@ -194,5 +194,3 @@ def _get_movie_info(api_key, movie_name=None, filter_fields=None, now_playing=Fa
 
     return results
 
-
-# print main({'query': {'movie': 'ferdinand'}}, {}).get('body')

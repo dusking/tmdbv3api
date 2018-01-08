@@ -3,6 +3,7 @@ logo: 'https://www.themoviedb.org/assets/static_cache/2dceae11589334eecd61443249
 
 functions:
     getinfo:
+        method: GET
         runtime: python2.7
         handler: handler.getinfo
         description: "get info about given movie"
@@ -15,6 +16,7 @@ functions:
         timeout: 30
 
     getrating:
+        method: GET
         runtime: python2.7
         handler: handler.getrating
         description: "get rating about given movie"
@@ -27,6 +29,7 @@ functions:
         timeout: 30
 
     latest:
+        method: GET
         runtime: python2.7
         handler: handler.latest
         description: "get rating about given movie"
@@ -39,6 +42,7 @@ functions:
         timeout: 30
 
     slackcommand:
+        method: POST
         runtime: python2.7
         handler: handler.slackcommand
         description: "get rating about given movie"
@@ -51,6 +55,7 @@ functions:
         timeout: 30
 
     slackbot:
+        method: POST
         runtime: python2.7
         handler: handler.slackbot
         description: "get rating about given movie"
