@@ -5,147 +5,20 @@
 # The function should return a Dictionary
 import os
 import json
-import urlparse
-
-from box import Box
 from tmdbv3api import TMDb, Movie
-from slackclient import SlackClient
-
-
-def getinfo(event, context):
-    query_params = event.get("query", {})
-    info = _get_movie_info(os.environ.get('tmd  b_api_key'),
-                           query_params.get('movie'))
-    return _build_response(info)
-
-
-def getrating(event, context):
-    query_params = event.get("query", {})
-    info = _get_movie_info(os.environ.get('tmdb_api_key'),
-                           query_params.get('movie'),
-                           filter_fields=['title', 'vote_average'])
-    return _build_response(info)
 
 
 def latest(event, context):
-    query_params = event.get("query", {})
-    info = _get_now_playing(query_params.get('movie'))
-    return _build_response(info)
-
-
-def slackcommand(event, context):
-    body = event.get("body", "{}")
-    response = _handle_slack_challenge(body)
-    if response:
-        return response
-    slack_event = urlparse.parse_qs(body)
-    failure = _verify_slack_command(slack_event)
-    if failure:
-        return failure
-    slack_event = Box(slack_event, default_box_attr=None, default_box=True)
-    if slack_event.text[0] == 'help':
-        return _build_slack_response('Supported command options: [now_playing]', visible_all=False)
-    if slack_event.text[0] == 'now_playing':
-        text = _format_slack_message(_get_now_playing())
-        return _build_slack_response(text)
-    return _build_slack_response('Supported command options: [now_playing]', visible_all=False)
-
-
-def slackbot(event, context):
-    body = event.get("body", "{}")
-    body_params = json.loads(body)
-    response = _handle_slack_challenge(body)
-    if response:
-        return response
-
-    slack_token = os.environ.get('slack_api_token')
-    if not slack_token:
-        return _build_response({'error': 'missing slack token'})
-
-    slack_event = body_params.get('event')
-    if not slack_event:
-        return _build_response({'error': 'missing slack event'})
-
-    slack_event = Box(slack_event, default_box_attr=None, default_box=True)
-    if slack_event.bot_id or not(slack_event.user and slack_event.type == "message"):
-        return _build_response({'error': 'we handle only user messages'})
-
-    if slack_event.text.startswith('imdb info for'):
-        movie = slack_event.text[len('imdb info for'):].strip()
-        tmdb_api_key = os.environ.get('tmdb_api_key')
-        info = _get_movie_info(tmdb_api_key, movie,
-                               filter_fields=['title', 'vote_average'])
-        sc = SlackClient(slack_token)
-        sc.api_call("chat.postMessage", channel=slack_event.channel, text=json.dumps(info))
-    elif slack_event.text.startswith('imdb latest'):
-        info = _get_now_playing()
-        sc = SlackClient(slack_token)
-        sc.api_call("chat.postMessage", channel=slack_event.channel, text=_format_slack_message(info))
-
-    return _build_response({'got': slack_event.text})
-
-
-def _handle_slack_challenge(body):
-    body_params = json.loads(body)
-    if 'challenge' in body_params:
-        response = _handle_slack_verification(body_params)
-        return _build_response(response)
-    return None
-
-
-def _verify_slack_command(slack_event):
-    if not slack_event or 'command' not in slack_event:
-        return _build_response({'error': 'not a slack command'})
-    # _verify_request_from_slack()
-    return None
-
-
-def _verify_request_from_slack(body_params, slack_token):
-    # Verify that the webhook request came from Slack.
-    # The app token can be retrieved from the app page (https://api.slack.com/apps/)
-    # Basic Information ==> App Credentials ==> Verification Token
-    pass
-
-
-def _get_now_playing(movie=None):
-    tmdb_api_key = os.environ.get('tmdb_api_key')
+    tmdb_api_key = event.get('tmdb_api_key', '')
     info = _get_movie_info(tmdb_api_key,
-                           movie_name=movie,
                            filter_fields=['title', 'vote_average'],
                            now_playing=True)
-    return info
-
-
-def _build_slack_response(text, visible_all=True):
-    response_type = 'in_channel' if visible_all else 'ephemeral'
-    response = {
-        "response_type": response_type,
-        'text': text
-    }
-    return _build_response(response)
-
-
-def _build_response(response, stringify=True):
-    response = json.dumps(response) if stringify else response
+    info = {'result': info}
     return {
         'statusCode': 200,
-        'body': response,
+        'body': json.dumps(info),
         'headers': {"Content-Type": "application/json"}
     }
-
-
-def _handle_slack_verification(body_params):
-    token = body_params.get('token')
-    challenge = body_params.get('challenge')
-    response = {"challenge": challenge}
-    return response
-
-
-def _format_slack_message(results):
-    text = ''
-    for record in results:
-        text += '*{0}* (rating: {1})\n'.format(record['title'], record['vote_average'])
-    return text
 
 
 def _get_movie_info(api_key, movie_name=None, filter_fields=None, now_playing=False):
