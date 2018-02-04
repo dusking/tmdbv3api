@@ -13,6 +13,7 @@ from slackclient import SlackClient
 
 
 def getinfo(event, context):
+    """Return the info about a given movie."""
     query_params = event.get("query", {})
     info = _get_movie_info(os.environ.get('tmdb_api_key'),
                            query_params.get('movie'))

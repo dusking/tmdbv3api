@@ -7,11 +7,11 @@ functions:
         runtime: python2.7
         handler: handler.getinfo
         description: "get info about given movie"
-        qparams:
+        input:
             movie:
+                description: The movie name to search
                 type: string
-                description: "the movie name"
-                required: true
+                required: true        
         memory: 128
         timeout: 30
 
@@ -20,10 +20,10 @@ functions:
         runtime: python2.7
         handler: handler.getrating
         description: "get rating about given movie"
-        qparams:
+        input:
             movie:
                 type: string
-                description: "the movie name"
+                description: the movie name
                 required: true
         memory: 128
         timeout: 30
@@ -32,12 +32,7 @@ functions:
         method: GET
         runtime: python2.7
         handler: handler.latest
-        description: "get rating about given movie"
-        qparams:
-            movie:
-                type: string
-                description: "the movie name"
-                required: true
+        description: "get rating about given movie"       
         memory: 128
         timeout: 30
 
@@ -46,7 +41,7 @@ functions:
         runtime: python2.7
         handler: handler.slackcommand
         description: "get rating about given movie"
-        qparams:
+        input:
             movie:
                 type: string
                 description: "the movie name"
@@ -59,7 +54,7 @@ functions:
         runtime: python2.7
         handler: handler.slackbot
         description: "get rating about given movie"
-        qparams:
+        input:
             movie:
                 type: string
                 description: "the movie name"
