@@ -6,25 +6,39 @@ functions:
         runtime: python2.7
         handler: handler.getinfo
         description: "get info about given movie"
-        input:
+        memory: 128
+        timeout: 30                
+        properties:            
             movie:
+                description: The movie name to search                
+                type: string  
+                required: true              
+                minLength: 1                
+                maxLength: 255      
+            filter:
                 description: The movie name to search
                 type: string
-                required: true        
-        memory: 128
-        timeout: 30
+                enum: 
+                    - name
+                    - rating        
 
     getrating:
         runtime: python2.7
         handler: handler.getrating
         description: "get rating about given movie"
-        input:
-            movie:
-                type: string
-                description: the movie name
-                required: true
         memory: 128
         timeout: 30
+        required:
+            - movie
+        properties:
+            movie:
+                type: string
+                description: the movie name                
+            year:
+                type: integer                
+                minimum: 1900
+                maximum: 2100
+                description: the movie name                        
 
     latest:
         runtime: python2.7
