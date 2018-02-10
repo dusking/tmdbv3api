@@ -12,30 +12,6 @@ from tmdbv3api import TMDb, Movie
 from slackclient import SlackClient
 
 
-def getinfo(event, context):
-    """Return the info about a given movie."""
-    print ("event: {}".format(json.dumps(event)))
-    query_params = event.get("query", {})
-    tmdb_api_key = context.get_doc('tmdb_api_key')
-    info = _get_movie_info(tmdb_api_key, query_params.get('movie'))
-    return _build_response(info)
-
-
-def getrating(event, context):
-    query_params = event.get("query", {})
-    tmdb_api_key = context.get_doc('tmdb_api_key')
-    info = _get_movie_info(tmdb_api_key, query_params.get('movie'),
-                           filter_fields=['title', 'vote_average'])
-    return _build_response(info)
-
-
-def latest(event, context):    
-    tmdb_api_key = context.get_doc('tmdb_api_key')
-    info = _get_movie_info(tmdb_api_key, now_playing=True
-                           filter_fields=['title', 'vote_average'])
-    return _build_response(info)
-
-
 def _build_response(response, stringify=True):
     response = json.dumps(response) if stringify else response
     return {

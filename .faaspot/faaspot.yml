@@ -4,7 +4,7 @@ logo: 'https://www.themoviedb.org/assets/static_cache/2dceae11589334eecd61443249
 functions:
     getinfo:
         runtime: python2.7
-        handler: handler.getinfo
+        handler: getinfo.getinfo
         description: "get info about given movie"
         memory: 128
         timeout: 30                
@@ -24,7 +24,7 @@ functions:
 
     getrating:
         runtime: python2.7
-        handler: handler.getrating
+        handler: getrating.getrating
         description: "get rating about given movie"
         memory: 128
         timeout: 30
@@ -42,7 +42,7 @@ functions:
 
     latest:
         runtime: python2.7
-        handler: handler.latest
+        handler: latest.latest
         description: "get rating about given movie"       
         memory: 128
         timeout: 30
