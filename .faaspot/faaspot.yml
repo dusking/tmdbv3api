@@ -2,47 +2,63 @@
 logo: 'https://www.themoviedb.org/assets/static_cache/2dceae11589334eecd61443249261daf/images/v4/logos/208x226-stacked-green.png'
 
 functions:
-    getinfo:
+    popular:
         runtime: python2.7
-        handler: getinfo.getinfo
-        description: "get info about given movie"
+        handler: getpopular.gepopular
+        description: "get current popular movies"
         memory: 128
         timeout: 30                
-        properties:            
-            movie:
-                description: The movie name to search                
-                type: string  
-                required: true              
-                minLength: 1                
-                maxLength: 255      
-            filter:
-                description: The movie name to search
-                type: string
-                enum: 
-                    - name
-                    - rating        
+        properties: 
+            poster_size:
+                description: The required poster width
+                type: integer  
+                required: true  
+        samples:
+            -   args: 
+                    poster_size: 300
+                name: Smaller size
 
-    getrating:
-        runtime: python2.7
-        handler: getrating.getrating
-        description: "get rating about given movie"
-        memory: 128
-        timeout: 30
-        required:
-            - movie
-        properties:
-            movie:
-                type: string
-                description: the movie name                
-            year:
-                type: integer                
-                minimum: 1900
-                maximum: 2100
-                description: the movie name                        
+    # getinfo:
+    #     runtime: python2.7
+    #     handler: getinfo.getinfo
+    #     description: "get info about given movie"
+    #     memory: 128
+    #     timeout: 30                
+    #     properties:            
+    #         movie:
+    #             description: The movie name to search                
+    #             type: string  
+    #             required: true              
+    #             minLength: 1                
+    #             maxLength: 255      
+    #         filter:
+    #             description: The movie name to search
+    #             type: string
+    #             enum: 
+    #                 - name
+    #                 - rating        
 
-    latest:
-        runtime: python2.7
-        handler: latest.latest
-        description: "get rating about given movie"       
-        memory: 128
-        timeout: 30
+    # getrating:
+    #     runtime: python2.7
+    #     handler: getrating.getrating
+    #     description: "get rating about given movie"
+    #     memory: 128
+    #     timeout: 30
+    #     required:
+    #         - movie
+    #     properties:
+    #         movie:
+    #             type: string
+    #             description: the movie name                
+    #         year:
+    #             type: integer                
+    #             minimum: 1900
+    #             maximum: 2100
+    #             description: the movie name                        
+
+    # latest:
+    #     runtime: python2.7
+    #     handler: latest.latest
+    #     description: "get rating about given movie"       
+    #     memory: 128
+    #     timeout: 30

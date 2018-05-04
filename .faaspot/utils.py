@@ -48,10 +48,10 @@ def _get_movie_info(api_key, movie_name=None, filter_fields=None, now_playing=Fa
                          'release_date', 'genres']
     results = []
     sorted_movies = sorted(search, key=lambda x: x.release_date, reverse=True)
-    for item in sorted_movies:
+    for item in sorted_movies:        
+        info = movie.details(item.id)
         if now_playing and movie_name and movie_name not in info.title:
             continue
-        info = movie.details(item.id)
         genres = [x['name'] for x in info.genres]
         info_dict = {'id': item.id,
                      'title': info.title,
