@@ -63,6 +63,14 @@ def endpoint(schema=None):
     def endpoint_wrapper(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
+            def auto_cast(value):
+                try:
+                    if "." in value:
+                        return float(value)
+                    return int(value)
+                except ValueError:
+                    return value
+
             event, context = args
             print ("event: {0}".format(event))
             print ("context: {0}".format(context))
@@ -73,7 +81,7 @@ def endpoint(schema=None):
                 body = json.loads(body)
             except ValueError:
                 body = urlparse.parse_qs(body)  
-                body = {k: v[0] for k, v in body.iteritems()}
+                body = {k: auto_cast(v[0]) for k, v in body.iteritems()}
 
             if schema:
                 try:

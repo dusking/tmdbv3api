@@ -4,7 +4,7 @@ from tmdbv3api import TMDb, Movie
 from wrapper import endpoint
 
 schema = {
-    'required': ['poster_size'],
+    'required': [],
     'properties':  {
         'poster_size': {'type': 'integer'}
     }
